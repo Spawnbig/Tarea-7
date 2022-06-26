@@ -13,7 +13,7 @@
         </b-card-text>
         <div class="text-right buttons">
           <b-button variant="success" @click="changeACompletada(t.id)">✓</b-button>
-          <b-button variant="danger" @click="eliminar(t.id)">X</b-button>
+          <b-button variant="danger" @click="showDialog = true; idEliminar = t.id">X</b-button>
         </div>
       </b-card-body>
     </b-card>
@@ -27,26 +27,40 @@
       </b-card-text>
       <div class="text-right buttons">
         <b-button variant="success" @click="changeACompletada(t.id)">↑</b-button>
-        <b-button variant="danger" @click="eliminar(t.id)">X</b-button>
+        <b-button variant="danger" @click="showDialog = true; idEliminar = t.id">X</b-button>
       </div>
       </b-card-body>
   </b-card>
 </div>
+  <DialogDelete
+  :show="showDialog"
+  :cancel="cancel"
+  :confirm="eliminar"
+  title="Eliminar Tarea?"
+  description="Realmente deseas eliminar la tarea?"
+
+
+  ></DialogDelete>
 
 </template>
 
 <script>
 import { useToDoStore } from './stores/ToDo'
-
+import DialogDelete from './components/DialogDelete.vue'
 
 
 export default {
+  components:{
+    DialogDelete
+  },
   data(){
     return{
       tarea: null,
       todos : useToDoStore(),
       noCompletados: [],
-      completados:[]
+      completados:[],
+      showDialog: false,
+      idEliminar: null
     }
   },
   mounted(){
@@ -71,8 +85,15 @@ export default {
       this.noCompletados = this.todos.noCompletados;
       this.completados = this.todos.completados;
     },
-    eliminar(value){
-      console.log(value)
+    eliminar(){
+      this.todos.eliminar(this.idEliminar)
+      this.noCompletados = this.todos.noCompletados;
+      this.completados = this.todos.completados;
+      this.idEliminar = null
+      this.showDialog = false
+    },
+    cancel(){
+      this.showDialog = false
     }
   }
 }

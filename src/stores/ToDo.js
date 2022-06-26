@@ -17,7 +17,6 @@ export const useToDoStore = defineStore('todo',{
             this.tareas.push({
                 id: idObject, tarea: tarea, completada: false
             })
-            console.log(this.tareas)
         },
         changeCompletada(id){
             if(this.tareas[(id-1)].completada){
@@ -25,6 +24,9 @@ export const useToDoStore = defineStore('todo',{
             }else {
                 this.tareas[(id-1)].completada = true
             }
+        },
+        eliminar(id){
+            this.tareas[(id-1)].eliminada = true
         }
     },
     getters:{
