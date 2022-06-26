@@ -11,9 +11,9 @@
         <b-card-text>
           {{t.tarea}}
         </b-card-text>
-        <div class="text-right">
-          <b-button variant="success">✓</b-button>
-          <b-button variant="danger">X</b-button>
+        <div class="text-right buttons">
+          <b-button variant="success" @click="changeACompletada(t.id)">✓</b-button>
+          <b-button variant="danger" @click="eliminar(t.id)">X</b-button>
         </div>
       </b-card-body>
     </b-card>
@@ -21,9 +21,15 @@
 <div class=".container-md mt-4 mx-auto w-50 container-completadas">
   <h5>v Completadas</h5>
   <b-card v-for="t in completados" v-bind:key="t.id" class="w-75 mt-2">
-      <b-card-text>
+    <b-card-body class="flex">
+      <b-card-text class="flex">
         {{t.tarea}}
       </b-card-text>
+      <div class="text-right buttons">
+        <b-button variant="success" @click="changeACompletada(t.id)">↑</b-button>
+        <b-button variant="danger" @click="eliminar(t.id)">X</b-button>
+      </div>
+      </b-card-body>
   </b-card>
 </div>
 
@@ -31,6 +37,7 @@
 
 <script>
 import { useToDoStore } from './stores/ToDo'
+
 
 
 export default {
@@ -43,26 +50,29 @@ export default {
     }
   },
   mounted(){
-    this.obtenerNoCompletados()
-    this.obtenerCompletados()
+    this.noCompletados = this.todos.noCompletados
+    this.completados = this.todos.completados
   },
   methods: {
     addTodo(){
       if(this.tarea != null || this.tarea != ''){
-        this.todos.addTodo(this.tarea)
-        this.tarea = null
-        this.noCompletados = this.obtenerNoCompletados;
+        this.todos.addTodo(this.tarea);
+        this.tarea = null;
+        this.noCompletados = this.todos.noCompletados;
+        this.completados = this.todos.completados;
       }
 
     },
     showInfo(a){
       console.log(a)
     },
-    obtenerNoCompletados(){
+    changeACompletada(value){
+      this.todos.changeCompletada(value)
       this.noCompletados = this.todos.noCompletados;
-    },
-    obtenerCompletados(){
       this.completados = this.todos.completados;
+    },
+    eliminar(value){
+      console.log(value)
     }
   }
 }
@@ -71,6 +81,7 @@ export default {
 <style>
 .container-no-completadas{
   max-height: 500px;
+  overflow-y: auto;
 }
 
 
