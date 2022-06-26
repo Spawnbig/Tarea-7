@@ -8,7 +8,7 @@
       <hr />
       <div class="dialog__footer">
         <button @click="cancel" class="dialog__cancel">Cancel</button>
-        <button @click="confirm" class="dialog__confirm">Yes, delete it</button>
+        <button @click="confirm" class="dialog__confirm">Aceptar</button>
       </div>
     </div>
   </div>
